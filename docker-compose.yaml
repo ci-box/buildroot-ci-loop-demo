@@ -1,0 +1,100 @@
+version: '2'
+
+services:
+
+# LAVA server (for testing) instance inheriting from ci-box-lava-master
+  lava-server:
+    hostname: lava-server
+    extends:
+      file: ./ci-box-lava-master/docker-compose.yml
+      service: lava-server
+    build:
+      args:
+        version: 2020.05
+        admin_username: admin
+        admin_password: password
+        admin_token: "d0siRzClNHWNtUYJbpmjOPEyPp0QLCKqQtDGTftN"
+        workers: lava_worker0
+    networks:
+      default:
+        aliases:
+          - lava.server
+    ports:
+      - "8003:80" # expose http to outside
+    volumes:
+      - ./overlays/lava-server/etc/lava-server/dispatcher-config/devices:/etc/lava-server/dispatcher-config/devices
+      - ./overlays/lava-server/etc/lava-server/dispatcher-config/health-checks:/etc/lava-server/dispatcher-config/health-checks
+
+# LAVA worker0 (for testing) instance inheriting from ci-box-lava-worker
+  lava-worker:
+    hostname: lava_worker0
+    extends:
+      file: ./ci-box-lava-worker/docker-compose.yml
+      service: lava-worker
+    build:
+      args:
+        version: 2020.05
+        server: lava-server
+        extra_packages: nfs-kernel-server rpcbind ser2net tftpd-hpa
+    environment:
+      # We don't export /dev/kvm for compatibility reason (LAVA in a VM)
+      # Force libguestfs to use emulation instead of virtualization
+      - LIBGUESTFS_BACKEND_SETTINGS=force_tcg
+    volumes:
+      - /boot:/boot
+      - /lib/modules:/lib/modules
+
+# File Server (FTP/HTPP) to store artifacts (images, test templates...)
+  fileserver:
+    hostname: fileserver
+    extends:
+      file: ./ci-box-fileserver/docker-compose.yml
+      service: fileserver
+    build:
+      args:
+        http_port: 80
+        ftp_port: 21
+        root: "/wwwroot"
+    ports: # expose http to outside
+      - "8002:80"
+    volumes:
+      - ./overlays/fileserver/wwwroot:/wwwroot
+
+# Jenkins (for building) instance inheriting from ci-box-jenkins
+  jenkins-server:
+    hostname: jenkins-server
+    extends:
+      file: ./ci-box-jenkins/docker-compose.yml
+      service: jenkins
+    build:
+      args:
+        version: lts
+        admin_username: admin
+        admin_password: password
+        extra_packages: "build-essential gcc-aarch64-linux-gnu bc ftp gettext-base bison flex libssl-dev"
+        plugins: "git mailer git-parameter build-timeout publish-over-ftp"
+    volumes:
+      - ./overlays/jenkins/var/jenkins_home/jobs:/var/jenkins_home/jobs
+    ports:
+      - "8001:8083"
+
+# SQUAD - Software Quality Dashboard
+  squad:
+    hostname: squad
+    extends:
+      file: ./ci-box-squad/docker-compose.yml
+      service: squad
+    build:
+      args:
+        admin_username: admin
+        admin_password: password
+        admin_token: "2d703e793ea345efdbab52d95fe33ec715bcc2d4"
+        group: "Linaro"
+        projects: "linux-mainline"
+        # Lava test execution backend
+        lava_server: lava.server
+        lava_username: admin
+        lava_token: "d0siRzClNHWNtUYJbpmjOPEyPp0QLCKqQtDGTftN"
+    ports: # expose http to outside
+      - "8000:80"
+

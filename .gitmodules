@@ -1,0 +1,15 @@
+[submodule "ci-box-lava-master"]
+	path = ci-box-lava-master
+	url = https://github.com/ci-box/ci-box-lava-master.git
+[submodule "ci-box-lava-worker"]
+	path = ci-box-lava-worker
+	url = https://github.com/ci-box/ci-box-lava-worker.git
+[submodule "ci-box-fileserver"]
+	path = ci-box-fileserver
+	url = https://github.com/ci-box/ci-box-fileserver.git
+[submodule "ci-box-squad"]
+	path = ci-box-squad
+	url = https://github.com/ci-box/ci-box-squad.git
+[submodule "ci-box-jenkins"]
+	path = ci-box-jenkins
+	url = https://github.com/ci-box/ci-box-jenkins.git
