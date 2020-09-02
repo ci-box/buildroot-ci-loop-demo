@@ -4,7 +4,7 @@
   <description></description>
   <keepDependencies>false</keepDependencies>
   <properties/>
-  <scm class="hudson.plugins.git.GitSCM" plugin="git@4.3.0">
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@4.4.1">
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
@@ -53,13 +53,12 @@ cp .config arch/arm64/boot/config
 </command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
-      <command># Publish the kernel
+      <command># Publish the kernel to our file server (using FTP)
 FILESERVER=fileserver
 
 VERSION=$(make kernelversion)
 cp arch/arm64/boot/Image.gz Image-${VERSION}.gz
 
-# Push images to artifact server
 ftp -n &lt;&lt; EOF
 open ${FILESERVER}
 user anonymous
@@ -87,6 +86,7 @@ VERSION=$(make kernelversion)
 
 # Substitute with build info
 export KERNEL_URL=http://${FILESERVER}/linux/Image-${VERSION}.gz
+export ROOTFS_URL=https://people.linaro.org/~loic.poulain/micro-rootfs/micro-rootfs-dev-aarch64.ext2.gz
 export COMMIT_ID=$(git rev-parse HEAD)
 
 for url in ${LAVA_JOB_TEMPLATES}; do

@@ -3,7 +3,8 @@ job_name: qemu arm64 non-reg tests
 
 metadata:
   commit_id: ${COMMIT_ID}
-  build: ${KERNEL_URL}
+  kernel_url: ${KERNEL_URL}
+  rootfs_url: ${ROOTFS_URL}
 
 timeouts:
   job:
@@ -36,7 +37,7 @@ actions:
         compression: gz
       rootfs:
         image_arg: -drive format=raw,file={rootfs} --append 'root=/dev/vda'
-        url: https://people.linaro.org/~loic.poulain/micro-rootfs/micro-rootfs-dev-aarch64.ext2.gz
+        url: ${ROOTFS_URL}
         compression: gz
 
 - boot:
