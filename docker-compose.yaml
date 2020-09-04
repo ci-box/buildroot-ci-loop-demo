@@ -60,6 +60,21 @@ services:
     volumes:
       - ./overlays/fileserver/wwwroot:/wwwroot
 
+  git-server:
+    hostname: git-server
+    extends:
+      file: ./ci-box-git-server/docker-compose.yml
+      service: git-server
+    build:
+      args:
+        version: "latest"
+    ports: # expose ssh & http to outside
+      - "8022:22"
+      - "8023:80"
+    volumes:
+      - ./overlays/gitserver/pubkeys:/git-server/keys
+      - ./overlays/gitserver/repos:/git-server/repos
+
 # Jenkins (for building) instance inheriting from ci-box-jenkins
   jenkins-server:
     hostname: jenkins-server
@@ -71,7 +86,7 @@ services:
         version: lts
         admin_username: admin
         admin_password: password
-        extra_packages: "build-essential gcc-aarch64-linux-gnu bc ftp gettext-base bison flex libssl-dev"
+        extra_packages: "build-essential gcc-aarch64-linux-gnu bc ftp gettext-base bison flex libssl-dev file cpio rsync"
         plugins: "git mailer git-parameter build-timeout publish-over-ftp"
     volumes:
       - ./overlays/jenkins/var/jenkins_home/jobs:/var/jenkins_home/jobs
@@ -90,7 +105,7 @@ services:
         admin_password: password
         admin_token: "2d703e793ea345efdbab52d95fe33ec715bcc2d4"
         group: "Linaro"
-        projects: "linux-mainline"
+        projects: "linux-mainline buildroot"
         # Lava test execution backend
         lava_server: lava.server
         lava_username: admin

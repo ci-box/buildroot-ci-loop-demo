@@ -13,3 +13,6 @@
 [submodule "ci-box-jenkins"]
 	path = ci-box-jenkins
 	url = https://github.com/ci-box/ci-box-jenkins.git
+[submodule "ci-box-git-server"]
+	path = ci-box-git-server
+	url = https://github.com/ci-box/ci-box-git-server.git
