@@ -68,7 +68,7 @@ Default addresses are:
 | Git server web interface | 8004 | http://localhost:8004 ||
 | Git SSH interface | 8022 | ssh://git@localhost:8022 | ssh pub keys into *overlays/gitserver/pubkeys* |
 
-#### 1. Fetch, modify and push
+#### 1. Fetch, modify and push (feed the CI pipeline)
 
 A buildroot git repository has been created by default, you can check that by accessing http://localhost:8023/?p=buildroot.git, as a developer you want to download that source code on your host.
 
