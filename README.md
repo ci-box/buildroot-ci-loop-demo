@@ -1,9 +1,9 @@
 # buildroot-ci-loop-demo 
 
-[Introduction](#Introduction)
-[Installing](#Installing)
-[Running](#Running)
-[Playing](#Playing)
+- [Introduction](#Introduction)
+- [Installing](#Installing)
+- [Running](#Running)
+- [Playing](#Playing)
 
 ## Introduction
 
@@ -12,6 +12,8 @@ Continuous integration (CI) is a development practice by which an in-development
 ![image](https://people.linaro.org/~loic.poulain/lava/ci-loop.png)
 
 This project is a preconfigured self-contained continuous integration loop based on Git, Jenkins, LAVA and SQUAD components. This preconfigured instance hosts, generates and tests a complete embedded system distro (buildroot based), demoing a real example of LAVA configuration and usage inside a CI loop.
+
+Components:
 
 - **Git**: Version control system, hosting the software (here buildroot)
 - **Jenkins**: Automation server for automate building of the software
@@ -36,7 +38,11 @@ Then clone the project:
 And build the instance:
     
     sudo docker-compose build
-Note: First build needs to download and create docker images, which takes some times...
+`Note`: First build needs to download and create docker images, which takes some times...
+
+For upcoming opertations you need to copy your ssh public key to the gitserver overlay:
+
+    cp ~/.ssh/id_rsa.pub overlays/gitserver/pubkeys/
 
 ## Running
 
@@ -53,10 +59,10 @@ Default addresses are:
 | ------ | ------ | ------ | ------ |
 | SQUAD web interface | 8000 | http://localhost:8000 | not need to log in
 | Jenkins web interface | 8001 | http://localhost:8001 | login: admin/password
-| fileserver web interface | 8002 | http://localhost:8002 |
+| fileserver web interface | 8002 | http://localhost:8002 ||
 | LAVA web interface | 8003 | http://localhost:8003 | login: admin/password
-| Git server web interface | 8004 | http://localhost:8004 |
-| Git SSH interface | 8022 | ssh://git@192.168.0.25:8022 |
+| Git server web interface | 8004 | http://localhost:8004 ||
+| Git SSH interface | 8022 | ssh://git@localhost:8022 | ssh pub keys into *overlays/gitserver/pubkeys* |
 
 #### 1. Fetch, modify and push
 
@@ -65,13 +71,16 @@ A buildroot git repository has been created by default, you can check that by ac
     git clone ssh://git@localhost:8022/git-server/repos/buildroot.git
     cd buildroot
 
-You can read the README file to know how to use and build that software, but here we are just going to modify it.
+You can read the README file to know how to use and build that software, but here we are just going to modify it. Example (add additional ramsmp package tool to arm64 config):
 
-Then push your change to the git server
+    echo "BR2_PACKAGE_RAMSMP=y" >> buildroot/arm64/.config
 
+Then commit and push your change to the git server:
+
+    git commit -a -s -m "test commit"
     git push
 
-Note: you can check your change now appears in the git server web interface.
+`Note`: you can check your change now appears in the git server web interface.
 
 #### 2. Check Jenkins
 
@@ -91,4 +100,4 @@ Access the buildroot project from software quality dashboard (SQUAD) to get info
 
 #### 6. Continue...
 
-If you push another change to the buildroot, repository, jenkins will trigger an other build, testing, report... You can compare builds from the squad interfaces. Your CI loop is operational.
+If you push another change to the buildroot repository, jenkins will trigger an other build, testing, report... You can compare builds from the squad interfaces. Your CI loop is operational.
