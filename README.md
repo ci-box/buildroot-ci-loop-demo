@@ -45,11 +45,12 @@ And build the instance:
 For upcoming opertations you need to copy your ssh public key to the gitserver overlay:
 
     cp ~/.ssh/id_rsa.pub overlays/gitserver/pubkeys/
+ (how to generate ssh key: https://git-scm.com/book/en/v2/Git-on-the-Server-Generating-Your-SSH-Public-Key)
 
 ## Running
 
     docker-compose up
-`Note`: If permission issue, either use sudo or add your user to the docker group
+`Note`: If you get a permission issue, either use sudo or add your user to the docker group
 
 ## Playing
 
@@ -74,7 +75,7 @@ A buildroot git repository has been created by default, you can check that by ac
     git clone ssh://git@localhost:8022/git-server/repos/buildroot.git
     cd buildroot
 
-You can read the README file to know how to use and build that software, but here we are just going to modify it. Example (add additional ramsmp package tool to arm64 config):
+You can read the README file to know how to use and build that software, but here we are just going to perform a simple update, adding additional ramsmp package tool to arm64 config:
 
     echo "BR2_PACKAGE_RAMSMP=y" >> buildroot/arm64/.config
 
