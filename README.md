@@ -1,5 +1,7 @@
 # buildroot-ci-loop-demo 
 
+A ready to run CI infrastructure with LAVA for automated testing.
+
 - [Introduction](#Introduction)
 - [Installing](#Installing)
 - [Running](#Running)
@@ -37,7 +39,7 @@ Then clone the project:
 
 And build the instance:
     
-    sudo docker-compose build
+    docker-compose build
 `Note`: First build needs to download and create docker images, which takes some times...
 
 For upcoming opertations you need to copy your ssh public key to the gitserver overlay:
@@ -46,7 +48,8 @@ For upcoming opertations you need to copy your ssh public key to the gitserver o
 
 ## Running
 
-    sudo docker-compose up
+    docker-compose up
+`Note`: If permission issue, either use sudo or add your user to the docker group
 
 ## Playing
 
