@@ -1,0 +1,4 @@
+# pack-refs with: peeled fully-peeled sorted 
+4e1ffa4804af088a10d8d1db2239599f674c1a02 refs/remotes/origin/dev
+ce20b1f1d8837101c86ab83d57e7dfafc9a53cfc refs/remotes/origin/devicetree-training
+f15b8d0b86e5bd29fc6c3669ab2f4d4574ea3693 refs/remotes/origin/master
