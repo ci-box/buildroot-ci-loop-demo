@@ -70,7 +70,7 @@ services:
         version: "latest"
     ports: # expose ssh & http to outside
       - "8022:22"
-      - "8023:80"
+      - "8004:80"
     volumes:
       - ./overlays/gitserver/pubkeys:/git-server/keys
       - ./overlays/gitserver/repos:/git-server/repos
