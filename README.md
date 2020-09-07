@@ -3,9 +3,10 @@
 A ready to run CI infrastructure with LAVA for automated testing.
 
 - [Introduction](#Introduction)
-- [Installing](#Installing)
-- [Running](#Running)
-- [Playing](#Playing)
+- [Install](#Install)
+- [Run](#Run)
+- [Play](#Play)
+- [Customize](#Customize)
 
 ## Introduction
 
@@ -27,7 +28,7 @@ Components:
 
 This preconfigured CI loop track a **custom buildroot git repository** which contains the buildroot system (git submodule), as well as a buildroot configuration and overlays. This repository is a typical way to create a **custom system** for an **embedded device**. A developer can **fetch** that repository and **push** its own changes. When a new **commit** is pushed to the master branch, jenkins detects it and **build** the system automatically, following the steps defined in the jenkins buildroot job configuration. Once the 'system' blobs have been generated (kernel, rootfs), Jenkins pushes them on the **artifact server** (via ftp) and **triggers testing** (LAVA jobs). LAVA takes care of **automated testing** of the newly generated system on the **device(s)** (in our case, qemu devices) and submit **test results** (pass/fail) to the **quality dashboard** (SQUAD) that users or developers can access to follow software progress.
 
-## Installing
+## Install
 
 Your distro must have **git**, **docker** and **docker-compose** packages installed.
 
@@ -47,12 +48,12 @@ For upcoming opertations you need to copy your ssh public key to the gitserver o
     cp ~/.ssh/id_rsa.pub overlays/gitserver/pubkeys/
  (how to generate ssh key: https://git-scm.com/book/en/v2/Git-on-the-Server-Generating-Your-SSH-Public-Key)
 
-## Running
+## Run
 
     docker-compose up
 `Note`: If you get a permission issue, either use sudo or add your user to the docker group
 
-## Playing
+## Play
 
 #### 0. Info
 Once all the services are up and running, you can access them. All are exposed to the network at different ports (listed below). If you want to access them directly from the machine you're currently running the services, then use the localhost addess, either use the machine ip address to access them remotely.
@@ -105,3 +106,9 @@ Access the buildroot project from software quality dashboard (SQUAD) to get info
 #### 6. Continue...
 
 If you push another change to the buildroot repository, jenkins will trigger an other build, testing, report... You can compare builds from the squad interfaces. Your CI loop is operational.
+
+## Customize
+
+#### Docker overlays
+#### Adding a test
+#### Testing with real device
