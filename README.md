@@ -40,7 +40,7 @@ Then clone the project:
 And build the instance:
     
     docker-compose build
-`Note`: First build needs to download and create docker images, which takes some times...
+`Note`: First build needs to download and create docker images, which takes some times... (~20/30min)
 
 For upcoming opertations you need to copy your ssh public key to the gitserver overlay:
 
